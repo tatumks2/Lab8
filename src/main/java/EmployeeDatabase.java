@@ -53,9 +53,20 @@ public class EmployeeDatabase {
      * @return int
      */
     public int countManagersAbove(final Employee employee) {
-        /*
-         * Implement this function
-         */
+        Employee manager = findManager(employee);
+        if (manager == null) {
+            return 0;
+        }
+        int count = 1;
+        for (int i = 0; i < 20; i++) {
+            if (findManager(manager) == null) {
+                return count;
+            } else{
+                manager = findManager(manager);
+                count ++;
+            }
+        }
+        return count;
     }
 
     /**
@@ -67,9 +78,17 @@ public class EmployeeDatabase {
      * @return int
      */
     public int countEmployeesUnder(final Employee employee) {
-        /*
-         * Implement this function
-         */
+        int total = 0;
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getManager().equals(employee.getName())) {
+                Employee managed = employees.get(i);
+                //System.out.println("managed is " + managed.getName() + " total plus one");
+                total = 1 + countEmployeesUnder(managed);
+            } else {
+                //System.out.println(employees.get(i).getName() + " manager is " + employees.get(i).getManager());
+            }
+        }
+        return total;
     }
 
     /**
